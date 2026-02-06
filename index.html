@@ -1,1 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sawda & Ben's Tea Ideas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF4D4D;
+            --primary-dark: #CC0000;
+            --secondary: #FFB800;
+            --accent: #00D9FF;
+            --dark: #0A0E27;
+            --dark-blue: #1A1F3A;
+            --light: #F8F9FA;
+            --cream: #FFF8F0;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 77, 77, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 217, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255, 184, 0, 0.08) 0%, transparent 50%);
+            animation: pulse 15s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            z-index: 1;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' /%3E%3C/svg%3E");
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            letter-spacing: -2px;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: rgba(248, 249, 250, 0.7);
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .main-content {
+            background: rgba(26, 31, 58, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 100px;
+            padding: 6px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tab {
+            padding: 14px 35px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: rgba(248, 249, 250, 0.6);
+            border-radius: 100px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+            position: relative;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 20px rgba(255, 77, 77, 0.4);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .wheel-section {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .wheel-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 50px;
+            color: var(--light);
+            font-weight: 700;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 450px;
+            height: 450px;
+            margin: 50px auto;
+            animation: scaleIn 0.6s ease-out 0.4s backwards;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        #wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 6px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            box-shadow: 
+                0 0 0 12px rgba(10, 14, 39, 0.8),
+                0 0 60px rgba(255, 77, 77, 0.3),
+                inset 0 0 80px rgba(0, 0, 0, 0.3);
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-top: 50px solid var(--primary);
+            z-index: 10;
+            filter: drop-shadow(0 4px 12px rgba(255, 77, 77, 0.6));
+            animation: pointerBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes pointerBounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-8px); }
+        }
+
+        .spin-button {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 20px 60px;
+            font-size: 1.3rem;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 30px rgba(255, 77, 77, 0.4);
+            font-weight: 700;
+            font-family: 'DM Sans', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spin-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .spin-button:hover::before {
+            left: 100%;
+        }
+
+        .spin-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(255, 77, 77, 0.6);
+        }
+
+        .spin-button:active {
+            transform: translateY(-1px);
+        }
+
+        .spin-button:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .result-section {
+            margin-top: 60px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+
+        .result-section.show {
+            display: block;
+            animation: resultSlideIn 0.6s ease-out;
+        }
+
+        @keyframes resultSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .meal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+
+        .meal-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .meta-tag {
+            background: rgba(255, 77, 77, 0.15);
+            color: var(--light);
+            padding: 10px 20px;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 77, 77, 0.3);
+            font-weight: 500;
+        }
+
+        .ingredients-section, .instructions-section {
+            margin-top: 40px;
+        }
+
+        .ingredients-section h3, .instructions-section h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--light);
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .ingredients-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .ingredients-list li {
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid var(--primary);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            animation: ingredientFadeIn 0.4s ease-out backwards;
+        }
+
+        .ingredients-list li:nth-child(1) { animation-delay: 0.1s; }
+        .ingredients-list li:nth-child(2) { animation-delay: 0.15s; }
+        .ingredients-list li:nth-child(3) { animation-delay: 0.2s; }
+        .ingredients-list li:nth-child(4) { animation-delay: 0.25s; }
+        .ingredients-list li:nth-child(5) { animation-delay: 0.3s; }
+        .ingredients-list li:nth-child(6) { animation-delay: 0.35s; }
+
+        @keyframes ingredientFadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .ingredients-list li:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+
+        .instructions-list {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .instructions-list li {
+            counter-increment: step-counter;
+            padding: 20px 20px 20px 80px;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            position: relative;
+            transition: all 0.3s ease;
+            animation: stepFadeIn 0.4s ease-out backwards;
+        }
+
+        .instructions-list li:nth-child(1) { animation-delay: 0.1s; }
+        .instructions-list li:nth-child(2) { animation-delay: 0.2s; }
+        .instructions-list li:nth-child(3) { animation-delay: 0.3s; }
+        .instructions-list li:nth-child(4) { animation-delay: 0.4s; }
+        .instructions-list li:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes stepFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .instructions-list li:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .instructions-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.4);
+        }
+
+        .meal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .meal-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            animation: cardFadeIn 0.5s ease-out backwards;
+        }
+
+        .meal-card:nth-child(1) { animation-delay: 0.1s; }
+        .meal-card:nth-child(2) { animation-delay: 0.15s; }
+        .meal-card:nth-child(3) { animation-delay: 0.2s; }
+        .meal-card:nth-child(4) { animation-delay: 0.25s; }
+        .meal-card:nth-child(5) { animation-delay: 0.3s; }
+        .meal-card:nth-child(6) { animation-delay: 0.35s; }
+
+        @keyframes cardFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .meal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 77, 77, 0.1), rgba(255, 184, 0, 0.1));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .meal-card:hover::before {
+            opacity: 1;
+        }
+
+        .meal-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 77, 77, 0.5);
+            box-shadow: 0 15px 40px rgba(255, 77, 77, 0.3);
+        }
+
+        .meal-card h4 {
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .meal-card .tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .meal-card .tag {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: rgba(248, 249, 250, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .main-content {
+                padding: 30px 20px;
+            }
+
+            .wheel-container {
+                width: 320px;
+                height: 320px;
+            }
+
+            .meal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                width: 100%;
+                flex-direction: column;
+                border-radius: 20px;
+            }
+
+            .tab {
+                width: 100%;
+                border-radius: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="container">
+        <header>
+            <h1>Sawda & Ben's<br>Tea Ideas</h1>
+            <p class="subtitle">Never wonder what's for dinner again</p>
+        </header>
+
+        <div class="main-content">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('wheel')">Spin the Wheel</button>
+                <button class="tab" onclick="switchTab('browse')">Browse Meals</button>
+            </div>
+
+            <div id="wheel-tab" class="tab-content active">
+                <div class="wheel-section">
+                    <h2>Feeling lucky? Let's decide what's for tea</h2>
+                    <div class="wheel-container">
+                        <div class="wheel-pointer"></div>
+                        <canvas id="wheel" width="450" height="450"></canvas>
+                    </div>
+                    <button class="spin-button" id="spinBtn" onclick="spinWheel()">Spin Now</button>
+                </div>
+
+                <div id="result" class="result-section"></div>
+            </div>
+
+            <div id="browse-tab" class="tab-content">
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 30px; text-align: center;">All Your Delicious Options</h2>
+                <div class="meal-grid" id="mealGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const meals = [
+            {
+                name: "Creamy Chicken Pasta",
+                cuisine: "Italian",
+                time: "25 mins",
+                difficulty: "Easy",
+                type: "Homemade",
+                ingredients: [
+                    "400g pasta (penne or fusilli)",
+                    "2 chicken breasts, diced",
+                    "200ml double cream",
+                    "100g grated parmesan",
+                    "2 cloves garlic, minced",
+                    "1 onion, diced",
+                    "200g mushrooms, sliced",
+                    "2 tbsp olive oil",
+                    "Salt and pepper",
+                    "Fresh parsley"
+                ],
+                instructions: [
+                    "Cook pasta according to packet instructions, drain and set aside",
+                    "Heat olive oil in a large pan and cook diced chicken until golden (about 6-7 minutes)",
+                    "Add onion and garlic, cook for 2 minutes until soft",
+                    "Add mushrooms and cook for another 3 minutes",
+                    "Pour in the cream and bring to a simmer",
+                    "Add parmesan cheese and stir until melted and creamy",
+                    "Toss in the cooked pasta and mix well",
+                    "Season with salt and pepper, garnish with parsley and serve!"
+                ]
+            },
+            {
+                name: "Beef Tacos (Takeaway Style)",
+                cuisine: "Mexican",
+                time: "20 mins",
+                difficulty: "Easy",
+                type: "Takeaway Style",
+                ingredients: [
+                    "500g beef mince",
+                    "8 taco shells or soft tortillas",
+                    "1 packet taco seasoning (or make your own: 1 tsp each of cumin, paprika, chili powder, garlic powder)",
+                    "1 lettuce, shredded",
+                    "2 tomatoes, diced",
+                    "200g grated cheddar cheese",
+                    "Sour cream",
+                    "Salsa",
+                    "1 onion, diced",
+                    "1 tbsp oil"
+                ],
+                instructions: [
+                    "Heat oil in a pan and cook the diced onion for 2 minutes",
+                    "Add beef mince and cook until browned, breaking it up as you go (about 8 minutes)",
+                    "Add taco seasoning and 100ml water, simmer for 5 minutes",
+                    "Warm taco shells in the oven (follow packet instructions)",
+                    "Set up a taco bar! Fill shells with beef, lettuce, tomatoes, cheese, sour cream and salsa",
+                    "Let everyone build their own perfect taco and enjoy!"
+                ]
+            },
+            {
+                name: "Chicken Tikka Masala",
+                cuisine: "Indian",
+                time: "30 mins",
+                difficulty: "Medium",
+                type: "Homemade",
+                ingredients: [
+                    "500g chicken breast, cubed",
+                    "1 jar tikka masala sauce (or 400ml if making from scratch)",
+                    "150g natural yogurt",
+                    "2 tbsp tikka masala paste",
+                    "1 onion, diced",
+                    "2 cloves garlic, minced",
+                    "2 tbsp oil",
+                    "Fresh coriander",
+                    "Rice or naan bread to serve"
+                ],
+                instructions: [
+                    "Mix chicken with half the yogurt and 1 tbsp tikka paste, let sit for 5-10 mins if you have time",
+                    "Cook rice according to packet instructions",
+                    "Heat oil in a large pan and cook chicken until golden (about 6-7 minutes)",
+                    "Remove chicken and set aside, add onion and garlic to the same pan",
+                    "Cook onion for 3 minutes, then add remaining tikka paste",
+                    "Pour in the tikka masala sauce and bring to a simmer",
+                    "Add chicken back in and cook for 5 minutes",
+                    "Stir in remaining yogurt, garnish with coriander and serve with rice or naan!"
+                ]
+            },
+            {
+                name: "Sweet & Sour Chicken",
+                cuisine: "Chinese",
+                time: "25 mins",
+                difficulty: "Easy",
+                type: "Takeaway Style",
+                ingredients: [
+                    "500g chicken breast, cut into chunks",
+                    "1 red pepper, diced",
+                    "1 green pepper, diced",
+                    "1 onion, diced",
+                    "1 tin pineapple chunks (keep the juice)",
+                    "3 tbsp tomato ketchup",
+                    "2 tbsp white vinegar",
+                    "2 tbsp soy sauce",
+                    "2 tbsp brown sugar",
+                    "1 tbsp cornflour",
+                    "2 tbsp oil",
+                    "Rice to serve"
+                ],
+                instructions: [
+                    "Cook rice according to packet instructions",
+                    "Mix ketchup, vinegar, soy sauce, sugar, and 4 tbsp pineapple juice in a bowl",
+                    "Heat oil in a wok or large pan on high heat",
+                    "Cook chicken until golden (about 7 minutes), then remove and set aside",
+                    "Stir-fry peppers and onion for 3-4 minutes",
+                    "Add chicken back in with pineapple chunks",
+                    "Pour in the sweet and sour sauce and bring to a bubble",
+                    "Mix cornflour with 2 tbsp water, add to pan and stir until thick",
+                    "Serve immediately with rice!"
+                ]
+            },
+            {
+                name: "Spaghetti Bolognese",
+                cuisine: "Italian",
+                time: "30 mins",
+                difficulty: "Easy",
+                type: "Homemade",
+                ingredients: [
+                    "400g spaghetti",
+                    "500g beef mince",
+                    "1 jar bolognese sauce (or 400g tin chopped tomatoes + tomato puree)",
+                    "1 onion, diced",
+                    "2 carrots, finely diced",
+                    "2 cloves garlic, minced",
+                    "2 tbsp olive oil",
+                    "1 beef stock cube",
+                    "Parmesan to serve",
+                    "Fresh basil (optional)"
+                ],
+                instructions: [
+                    "Heat oil in a large pan and cook onion, carrots and garlic for 5 minutes",
+                    "Add beef mince and cook until browned (about 8 minutes)",
+                    "Pour in the bolognese sauce (or tomatoes + 2 tbsp tomato puree)",
+                    "Add stock cube and 100ml water, stir well",
+                    "Simmer on low heat for 15 minutes, stirring occasionally",
+                    "Meanwhile, cook spaghetti according to packet instructions",
+                    "Drain pasta and serve with bolognese sauce on top",
+                    "Sprinkle with parmesan and fresh basil if you have it!"
+                ]
+            },
+            {
+                name: "Cheeseburger & Chips",
+                cuisine: "American",
+                time: "25 mins",
+                difficulty: "Easy",
+                type: "Takeaway Style",
+                ingredients: [
+                    "4 beef burger patties (shop-bought or homemade)",
+                    "4 burger buns",
+                    "4 slices cheddar cheese",
+                    "Frozen chips",
+                    "Lettuce leaves",
+                    "2 tomatoes, sliced",
+                    "1 onion, sliced into rings",
+                    "Ketchup, mayo, mustard",
+                    "Pickles (optional)"
+                ],
+                instructions: [
+                    "Cook chips in the oven or air fryer according to packet instructions",
+                    "Heat a griddle pan or frying pan on medium-high heat",
+                    "Cook burger patties for 3-4 minutes each side",
+                    "In the last minute, add cheese slices on top to melt",
+                    "Toast the burger buns in the same pan for 1 minute",
+                    "Build your burgers: bun bottom, sauce, lettuce, burger with cheese, tomato, onion, pickles, more sauce, bun top!",
+                    "Serve with hot chips and extra ketchup on the side"
+                ]
+            },
+            {
+                name: "Chicken Stir-Fry Noodles",
+                cuisine: "Chinese",
+                time: "20 mins",
+                difficulty: "Easy",
+                type: "Homemade",
+                ingredients: [
+                    "2 chicken breasts, sliced thinly",
+                    "300g egg noodles",
+                    "1 red pepper, sliced",
+                    "1 pack baby corn",
+                    "100g mangetout or sugar snap peas",
+                    "2 cloves garlic, minced",
+                    "3 tbsp soy sauce",
+                    "1 tbsp honey",
+                    "1 tbsp sesame oil",
+                    "2 tbsp vegetable oil",
+                    "Spring onions to garnish"
+                ],
+                instructions: [
+                    "Cook noodles according to packet instructions, drain and set aside",
+                    "Mix soy sauce, honey and sesame oil in a small bowl",
+                    "Heat vegetable oil in a wok on high heat",
+                    "Stir-fry chicken for 5-6 minutes until cooked through, remove and set aside",
+                    "Add peppers, baby corn and mangetout to the wok, stir-fry for 3-4 minutes",
+                    "Add garlic and cook for 30 seconds",
+                    "Return chicken to the wok with the noodles",
+                    "Pour over the sauce and toss everything together for 2 minutes",
+                    "Garnish with spring onions and serve immediately!"
+                ]
+            },
+            {
+                name: "Shepherd's Pie",
+                cuisine: "British",
+                time: "40 mins",
+                difficulty: "Medium",
+                type: "Homemade",
+                ingredients: [
+                    "500g lamb mince (or beef for cottage pie)",
+                    "4 large potatoes, peeled and chopped",
+                    "2 carrots, diced",
+                    "1 onion, diced",
+                    "100g frozen peas",
+                    "2 tbsp tomato puree",
+                    "300ml beef stock",
+                    "50g butter",
+                    "50ml milk",
+                    "50g grated cheddar",
+                    "2 tbsp oil",
+                    "Worcestershire sauce"
+                ],
+                instructions: [
+                    "Boil potatoes in salted water for 15-20 minutes until soft",
+                    "Meanwhile, heat oil in a large pan and cook onion and carrots for 5 minutes",
+                    "Add mince and cook until browned (about 8 minutes)",
+                    "Stir in tomato puree, cook for 1 minute",
+                    "Add stock, peas and a splash of Worcestershire sauce, simmer for 10 minutes",
+                    "Drain potatoes and mash with butter and milk until smooth",
+                    "Pour mince mixture into an oven-proof dish",
+                    "Top with mashed potato, sprinkle with cheese",
+                    "Grill for 5-7 minutes until golden and bubbling - enjoy your comfort food!"
+                ]
+            },
+            {
+                name: "Fajitas",
+                cuisine: "Mexican",
+                time: "25 mins",
+                difficulty: "Easy",
+                type: "Homemade",
+                ingredients: [
+                    "500g chicken breast, sliced into strips",
+                    "2 peppers (mixed colours), sliced",
+                    "1 onion, sliced",
+                    "8 flour tortillas",
+                    "1 packet fajita seasoning",
+                    "Sour cream",
+                    "Grated cheese",
+                    "Salsa",
+                    "Guacamole (optional)",
+                    "2 tbsp oil",
+                    "Lime wedges"
+                ],
+                instructions: [
+                    "Heat oil in a large pan on high heat",
+                    "Add chicken strips and cook for 5-6 minutes until golden",
+                    "Add peppers and onions, cook for another 5 minutes",
+                    "Sprinkle fajita seasoning over everything and add 3 tbsp water",
+                    "Cook for 2-3 minutes until nicely coated",
+                    "Warm tortillas in the microwave (wrap in damp kitchen paper, 30 seconds)",
+                    "Serve everything at the table and let everyone build their own fajitas!",
+                    "Squeeze lime juice over before wrapping and digging in"
+                ]
+            },
+            {
+                name: "Chicken Fried Rice",
+                cuisine: "Chinese",
+                time: "20 mins",
+                difficulty: "Easy",
+                type: "Takeaway Style",
+                ingredients: [
+                    "2 chicken breasts, diced small",
+                    "300g cooked rice (ideally day-old or microwave rice)",
+                    "2 eggs, beaten",
+                    "100g frozen peas",
+                    "3 spring onions, chopped",
+                    "2 cloves garlic, minced",
+                    "3 tbsp soy sauce",
+                    "1 tbsp sesame oil",
+                    "2 tbsp vegetable oil",
+                    "White pepper to taste"
+                ],
+                instructions: [
+                    "Heat 1 tbsp oil in a wok on high heat",
+                    "Scramble the eggs, then remove and set aside",
+                    "Add remaining oil and cook chicken for 5-6 minutes until cooked through",
+                    "Add garlic and cook for 30 seconds",
+                    "Add the rice, breaking up any clumps, stir-fry for 3-4 minutes",
+                    "Add peas, spring onions, soy sauce and sesame oil",
+                    "Return scrambled egg to the wok and mix everything together",
+                    "Season with white pepper and serve piping hot!"
+                ]
+            },
+            {
+                name: "Beef Chilli Con Carne",
+                cuisine: "Mexican",
+                time: "30 mins",
+                difficulty: "Easy",
+                type: "Homemade",
+                ingredients: [
+                    "500g beef mince",
+                    "1 tin kidney beans, drained",
+                    "1 tin chopped tomatoes",
+                    "1 onion, diced",
+                    "2 cloves garlic, minced",
+                    "2 tbsp tomato puree",
+                    "1 tsp cumin",
+                    "1 tsp paprika",
+                    "½ tsp mild chili powder (mild version!)",
+                    "1 beef stock cube",
+                    "Rice or jacket potatoes to serve",
+                    "Sour cream and cheese (optional)"
+                ],
+                instructions: [
+                    "Heat oil in a large pan and cook onion and garlic for 3 minutes",
+                    "Add beef mince and cook until browned (about 8 minutes)",
+                    "Stir in tomato puree and spices, cook for 1 minute",
+                    "Add chopped tomatoes, kidney beans, stock cube and 200ml water",
+                    "Bring to a boil then reduce heat and simmer for 15 minutes",
+                    "Meanwhile, cook rice or bake jacket potatoes",
+                    "Taste and adjust seasoning if needed",
+                    "Serve with rice or jacket potato, topped with sour cream and cheese!"
+                ]
+            },
+            {
+                name: "Margherita Pizza (Homemade or Frozen)",
+                cuisine: "Italian",
+                time: "15 mins (frozen) / 30 mins (homemade)",
+                difficulty: "Easy",
+                type: "Takeaway Style",
+                ingredients: [
+                    "2 pizza bases (shop-bought or frozen)",
+                    "200g passata or pizza sauce",
+                    "300g mozzarella, torn",
+                    "Fresh basil leaves",
+                    "2 tbsp olive oil",
+                    "Garlic granules (optional)",
+                    "Oregano",
+                    "Salt and pepper"
+                ],
+                instructions: [
+                    "Preheat oven to 220°C (200°C fan)",
+                    "Place pizza bases on baking trays",
+                    "Spread passata evenly over each base, leaving a small border",
+                    "Scatter torn mozzarella over the top",
+                    "Drizzle with olive oil and sprinkle with oregano and garlic granules",
+                    "Bake for 12-15 minutes until cheese is bubbling and crust is golden",
+                    "Remove from oven, top with fresh basil leaves",
+                    "Slice and serve with a side salad - bellissimo!"
+                ]
+            }
+        ];
+
+        let currentRotation = 0;
+        let isSpinning = false;
+
+        function drawWheel() {
+            const canvas = document.getElementById('wheel');
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = canvas.width / 2 - 15;
+
+            const colors = [
+                ['#FF4D4D', '#CC0000'],
+                ['#FFB800', '#FF8C00'],
+                ['#00D9FF', '#0088CC'],
+                ['#FF6B9D', '#C9184A'],
+                ['#9B59B6', '#6C3483'],
+                ['#3498DB', '#2874A6'],
+                ['#E74C3C', '#A93226'],
+                ['#F39C12', '#CA6F1E'],
+                ['#1ABC9C', '#148F77'],
+                ['#E67E22', '#BA4A00'],
+                ['#95A5A6', '#626567'],
+                ['#16A085', '#117A65']
+            ];
+            
+            const anglePerSlice = (2 * Math.PI) / meals.length;
+
+            meals.forEach((meal, index) => {
+                const startAngle = index * anglePerSlice;
+                const endAngle = startAngle + anglePerSlice;
+                const colorPair = colors[index % colors.length];
+
+                // Create gradient for each slice
+                const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+                gradient.addColorStop(0, colorPair[0]);
+                gradient.addColorStop(1, colorPair[1]);
+
+                // Draw slice
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                ctx.lineTo(centerX, centerY);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Draw text
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(startAngle + anglePerSlice / 2);
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 15px "DM Sans", sans-serif';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+                ctx.shadowBlur = 4;
+                ctx.shadowOffsetX = 1;
+                ctx.shadowOffsetY = 1;
+                ctx.fillText(meal.name, radius - 25, 5);
+                ctx.restore();
+            });
+
+            // Draw center circle with gradient
+            const centerGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 40);
+            centerGradient.addColorStop(0, '#FF4D4D');
+            centerGradient.addColorStop(1, '#CC0000');
+            
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 40, 0, 2 * Math.PI);
+            ctx.fillStyle = centerGradient;
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+
+            isSpinning = true;
+            document.getElementById('spinBtn').disabled = true;
+
+            const wheel = document.getElementById('wheel');
+            const spins = 5 + Math.random() * 5; // 5-10 full spins
+            const extraDegrees = Math.random() * 360;
+            const totalRotation = (spins * 360) + extraDegrees;
+
+            currentRotation += totalRotation;
+            wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+            setTimeout(() => {
+                const normalizedRotation = currentRotation % 360;
+                const anglePerSlice = 360 / meals.length;
+                // Adjust for pointer at top
+                const adjustedRotation = (360 - normalizedRotation + 90) % 360;
+                const selectedIndex = Math.floor(adjustedRotation / anglePerSlice) % meals.length;
+                const selectedMeal = meals[selectedIndex];
+
+                showMealResult(selectedMeal);
+                isSpinning = false;
+                document.getElementById('spinBtn').disabled = false;
+            }, 4000);
+        }
+
+        function showMealResult(meal) {
+            const resultDiv = document.getElementById('result');
+            
+            const ingredientsList = meal.ingredients.map(ing => `<li>${ing}</li>`).join('');
+            const instructionsList = meal.instructions.map(inst => `<li>${inst}</li>`).join('');
+
+            resultDiv.innerHTML = `
+                <h3 class="meal-title">🎉 ${meal.name}</h3>
+                <div class="meal-meta">
+                    <span class="meta-tag">🍴 ${meal.cuisine}</span>
+                    <span class="meta-tag">⏱️ ${meal.time}</span>
+                    <span class="meta-tag">📊 ${meal.difficulty}</span>
+                    <span class="meta-tag">🏠 ${meal.type}</span>
+                </div>
+
+                <div class="ingredients-section">
+                    <h3>🛒 Ingredients</h3>
+                    <ul class="ingredients-list">
+                        ${ingredientsList}
+                    </ul>
+                </div>
+
+                <div class="instructions-section">
+                    <h3>👨‍🍳 Instructions</h3>
+                    <ol class="instructions-list">
+                        ${instructionsList}
+                    </ol>
+                </div>
+            `;
+
+            resultDiv.classList.add('show');
+            setTimeout(() => {
+                resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+
+        function createMealGrid() {
+            const grid = document.getElementById('mealGrid');
+            
+            meals.forEach(meal => {
+                const card = document.createElement('div');
+                card.className = 'meal-card';
+                card.onclick = () => {
+                    showMealResult(meal);
+                    switchTab('wheel');
+                    document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+                };
+
+                card.innerHTML = `
+                    <h4>${meal.name}</h4>
+                    <div class="tags">
+                        <span class="tag">🍴 ${meal.cuisine}</span>
+                        <span class="tag">⏱️ ${meal.time}</span>
+                        <span class="tag">${meal.type}</span>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+
+        // Initialize
+        window.onload = () => {
+            drawWheel();
+            createMealGrid();
+        };
+    </script>
+</body>
+</html>
